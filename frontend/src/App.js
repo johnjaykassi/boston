@@ -752,6 +752,60 @@ const NewsPage = () => {
   );
 };
 
+// News Management Component
+const NewsManagement = ({ onDelete }) => {
+  const [allNews, setAllNews] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAllNews = async () => {
+      try {
+        const response = await axios.get(`${API}/news`);
+        setAllNews(response.data);
+      } catch (error) {
+        console.error('Erreur lors du chargement des articles:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllNews();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-4">Chargement des articles...</div>;
+  }
+
+  return (
+    <div className="space-y-4">
+      {allNews.length > 0 ? (
+        allNews.map((article) => (
+          <div key={article.id} className="border border-gray-200 rounded-lg p-4">
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <h4 className="font-bold text-gray-900 mb-2">{article.title}</h4>
+                <p className="text-sm text-gray-600 mb-2">{article.content.substring(0, 150)}...</p>
+                <div className="text-xs text-gray-500">
+                  Par {article.author} - {new Date(article.created_at).toLocaleDateString('fr-FR')}
+                </div>
+              </div>
+              <button
+                onClick={() => onDelete(article.id, article.title)}
+                className="text-red-600 hover:text-red-800 p-1 ml-4"
+                title="Supprimer l'article"
+              >
+                🗑️
+              </button>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className="text-gray-500">Aucun article publié</p>
+      )}
+    </div>
+  );
+};
+
 // Admin Page Component
 const AdminPage = () => {
   const [activeTab, setActiveTab] = useState('teams');
