@@ -896,6 +896,21 @@ const AdminPage = () => {
     }
   };
 
+  const handleUpdateMatchScore = async (matchId, homeScore, awayScore) => {
+    try {
+      await axios.put(`${API}/matches/${matchId}`, {
+        home_team_score: parseInt(homeScore),
+        away_team_score: parseInt(awayScore),
+        status: 'finished'
+      });
+      fetchMatches();
+      alert('Score mis à jour avec succès !');
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du score:', error);
+      alert('Erreur lors de la mise à jour du score');
+    }
+  };
+
   const getTeamName = (teamId) => {
     const team = teams.find(t => t.id === teamId);
     return team ? team.name : 'Équipe inconnue';
