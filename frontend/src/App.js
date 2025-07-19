@@ -854,18 +854,45 @@ const AdminPage = () => {
     }
   };
 
-  const handleUpdateMatchScore = async (matchId, homeScore, awayScore) => {
-    try {
-      await axios.put(`${API}/matches/${matchId}`, {
-        home_team_score: parseInt(homeScore),
-        away_team_score: parseInt(awayScore),
-        status: 'finished'
-      });
-      fetchMatches();
-      alert('Score mis à jour avec succès !');
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du score:', error);
-      alert('Erreur lors de la mise à jour du score');
+  const handleDeleteTeam = async (teamId, teamName) => {
+    if (window.confirm(`Êtes-vous sûr de vouloir supprimer l'équipe "${teamName}" ?`)) {
+      try {
+        await axios.delete(`${API}/teams/${teamId}`);
+        fetchTeams();
+        alert('Équipe supprimée avec succès !');
+      } catch (error) {
+        console.error('Erreur lors de la suppression de l\'équipe:', error);
+        if (error.response?.status === 400) {
+          alert('Impossible de supprimer une équipe qui a des matchs associés');
+        } else {
+          alert('Erreur lors de la suppression de l\'équipe');
+        }
+      }
+    }
+  };
+
+  const handleDeleteMatch = async (matchId, homeTeam, awayTeam) => {
+    if (window.confirm(`Êtes-vous sûr de vouloir supprimer le match "${homeTeam} vs ${awayTeam}" ?`)) {
+      try {
+        await axios.delete(`${API}/matches/${matchId}`);
+        fetchMatches();
+        alert('Match supprimé avec succès !');
+      } catch (error) {
+        console.error('Erreur lors de la suppression du match:', error);
+        alert('Erreur lors de la suppression du match');
+      }
+    }
+  };
+
+  const handleDeleteNews = async (newsId, newsTitle) => {
+    if (window.confirm(`Êtes-vous sûr de vouloir supprimer l'article "${newsTitle}" ?`)) {
+      try {
+        await axios.delete(`${API}/news/${newsId}`);
+        alert('Article supprimé avec succès !');
+      } catch (error) {
+        console.error('Erreur lors de la suppression de l\'article:', error);
+        alert('Erreur lors de la suppression de l\'article');
+      }
     }
   };
 
