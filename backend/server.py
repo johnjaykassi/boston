@@ -294,6 +294,15 @@ async def get_news_item(news_id: str):
         raise HTTPException(status_code=404, detail="Article non trouvé")
     return News(**news)
 
+@api_router.delete("/news/{news_id}")
+async def delete_news(news_id: str):
+    news = await db.news.find_one({"id": news_id})
+    if not news:
+        raise HTTPException(status_code=404, detail="Article non trouvé")
+    
+    await db.news.delete_one({"id": news_id})
+    return {"message": "Article supprimé avec succès"}
+
 # Dashboard/Statistics
 @api_router.get("/dashboard")
 async def get_dashboard_stats():
