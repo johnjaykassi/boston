@@ -1213,6 +1213,12 @@ const AdminPage = () => {
                     {loading ? 'Publication...' : 'Publier l\'article'}
                   </button>
                 </form>
+                
+                {/* News Management */}
+                <div className="mt-8">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Gestion des articles</h3>
+                  <NewsManagement onDelete={handleDeleteNews} />
+                </div>
               </div>
             )}
             
