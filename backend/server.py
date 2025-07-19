@@ -199,6 +199,24 @@ async def get_team(team_id: str):
         raise HTTPException(status_code=404, detail="Équipe non trouvée")
     return Team(**team)
 
+@api_router.delete("/teams/{team_id}")
+async def delete_team(team_id: str):
+    # Check if team exists
+    team = await db.teams.find_one({"id": team_id})
+    if not team:
+        raise HTTPException(status_code=404, detail="Équipe non trouvée")
+    
+    # Check if team has matches
+    matches_count = await db.matches.count_documents({
+        "$or": [{"home_team_id": team_id}, {"away_team_id": team_id}]
+    })
+    
+    if matches_count > 0:
+        raise HTTPException(status_code=400, detail="Impossible de supprimer une équipe qui a des matchs associés")
+    
+    await db.teams.delete_one({"id": team_id})
+    return {"message": "Équipe supprimée avec succès"}
+
 # Matches
 @api_router.post("/matches", response_model=Match)
 async def create_match(match_data: MatchCreate):
