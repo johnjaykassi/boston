@@ -1104,6 +1104,49 @@ const AdminPage = () => {
                     {loading ? 'Création...' : 'Programmer le match'}
                   </button>
                 </form>
+                
+                {/* Matches List */}
+                <div className="mt-8">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Matchs programmés ({matches.length})</h3>
+                  <div className="space-y-3">
+                    {matches.map(match => (
+                      <div key={match.id} className="border border-gray-200 rounded-lg p-4">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="font-medium text-gray-900">
+                              {getTeamName(match.home_team_id)} vs {getTeamName(match.away_team_id)}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {new Date(match.match_date).toLocaleString('fr-FR')} - {match.venue}
+                            </p>
+                            <span className={`inline-block px-2 py-1 text-xs rounded-full mt-1 ${
+                              match.status === 'scheduled' ? 'bg-blue-100 text-blue-800' :
+                              match.status === 'finished' ? 'bg-gray-100 text-gray-800' :
+                              match.status === 'live' ? 'bg-green-100 text-green-800' :
+                              'bg-red-100 text-red-800'
+                            }`}>
+                              {match.status === 'scheduled' ? 'Programmé' :
+                               match.status === 'finished' ? 'Terminé' :
+                               match.status === 'live' ? 'En cours' : 'Annulé'}
+                            </span>
+                            {match.home_team_score !== null && match.away_team_score !== null && (
+                              <p className="text-sm font-bold text-gray-900 mt-1">
+                                Score: {match.home_team_score} - {match.away_team_score}
+                              </p>
+                            )}
+                          </div>
+                          <button
+                            onClick={() => handleDeleteMatch(match.id, getTeamName(match.home_team_id), getTeamName(match.away_team_id))}
+                            className="text-red-600 hover:text-red-800 p-1"
+                            title="Supprimer le match"
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
             
