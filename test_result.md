@@ -107,63 +107,78 @@ user_problem_statement: "Créer un site web pour une compétition de football lo
 backend:
   - task: "API Teams CRUD"
     implemented: true
-    working: false  
+    working: true  
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Implemented team creation, listing, and retrieval endpoints"
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING PASSED: All Teams API endpoints working correctly. Tested POST /api/teams (create 6 teams), GET /api/teams (list all), GET /api/teams/{id} (specific team), proper 404 handling for non-existent teams. All CRUD operations validated successfully."
         
   - task: "API Matches CRUD with automatic ranking calculation"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Implemented match creation, listing, updating with status management and automatic points calculation"
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING PASSED: All Matches API endpoints working correctly. Tested POST /api/matches (create matches), GET /api/matches (list all), PUT /api/matches/{id} (update scores/status). Validation working: team can't play itself (400), both teams must exist (404). Match updates with scores and status='finished' working perfectly."
         
   - task: "Rankings calculation system"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Implemented automatic ranking calculation based on match results with points (3-1-0), goal difference sorting"
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING PASSED: Rankings calculation system working perfectly. GET /api/rankings returns correct structure with all required fields. Points system verified: 3 points for win, 1 for draw, 0 for loss. Sorting correctly by points, then goal difference, then goals for. Only finished matches with scores count toward rankings as expected."
         
   - task: "News API endpoints"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Implemented news creation and listing endpoints"
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING PASSED: News API working correctly. POST /api/news creates articles successfully. GET /api/news returns only published articles (filtering unpublished correctly). All news operations validated."
         
   - task: "Dashboard statistics API"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Implemented dashboard stats endpoint for counts of teams, matches, etc."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING PASSED: Dashboard API working correctly. GET /api/dashboard returns proper structure with teams_count, matches_count, finished_matches, upcoming_matches. All counts validated and accurate."
 
 frontend:
   - task: "Homepage with hero section and stats"
