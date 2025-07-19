@@ -613,6 +613,7 @@ const CalendarPage = () => {
 // News Page Component
 const NewsPage = () => {
   const [news, setNews] = useState([]);
+  const [allNews, setAllNews] = useState([]);
   const [selectedNews, setSelectedNews] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -621,6 +622,7 @@ const NewsPage = () => {
       try {
         const response = await axios.get(`${API}/news`);
         setNews(response.data);
+        setAllNews(response.data);
       } catch (error) {
         console.error('Erreur lors du chargement des actualités:', error);
       } finally {
@@ -630,6 +632,16 @@ const NewsPage = () => {
 
     fetchNews();
   }, []);
+
+  const refreshNews = async () => {
+    try {
+      const response = await axios.get(`${API}/news`);
+      setAllNews(response.data);
+      setNews(response.data);
+    } catch (error) {
+      console.error('Erreur lors du rafraîchissement des actualités:', error);
+    }
+  };
 
   if (loading) {
     return (
