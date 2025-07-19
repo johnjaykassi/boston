@@ -1009,14 +1009,25 @@ const AdminPage = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {teams.map(team => (
                       <div key={team.id} className="border border-gray-200 rounded-lg p-4">
-                        <h4 className="font-bold text-gray-900">{team.name}</h4>
-                        <p className="text-sm text-gray-600">{team.city}</p>
-                        <p className="text-sm text-gray-600">
-                          {team.founded_year && `Fondée en ${team.founded_year}`}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {team.players_count} joueurs
-                        </p>
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <h4 className="font-bold text-gray-900">{team.name}</h4>
+                            <p className="text-sm text-gray-600">{team.city}</p>
+                            <p className="text-sm text-gray-600">
+                              {team.founded_year && `Fondée en ${team.founded_year}`}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {team.players_count} joueurs
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => handleDeleteTeam(team.id, team.name)}
+                            className="text-red-600 hover:text-red-800 p-1"
+                            title="Supprimer l'équipe"
+                          >
+                            🗑️
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
