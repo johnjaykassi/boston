@@ -260,6 +260,15 @@ async def update_match(match_id: str, match_update: MatchUpdate):
     updated_match = await db.matches.find_one({"id": match_id})
     return Match(**updated_match)
 
+@api_router.delete("/matches/{match_id}")
+async def delete_match(match_id: str):
+    match = await db.matches.find_one({"id": match_id})
+    if not match:
+        raise HTTPException(status_code=404, detail="Match non trouvé")
+    
+    await db.matches.delete_one({"id": match_id})
+    return {"message": "Match supprimé avec succès"}
+
 # Rankings
 @api_router.get("/rankings", response_model=List[Ranking])
 async def get_rankings():
